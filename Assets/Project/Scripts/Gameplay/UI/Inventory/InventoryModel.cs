@@ -8,6 +8,14 @@ namespace Project
         public event Action OnItemDataChanged;
         public List<ItemSlot> Items { get; private set; } = SaveController.Load(DataKey, new List<ItemSlot>());
         private const string DataKey = "Inventory";
+        private ItemCreator _itemCreator;
+
+        public void AddItem(ItemType itemType, int amount = 1)
+        {
+            Item item = _itemCreator.CreateItem(itemType);
+            ItemSlot itemSlot = new ItemSlot(item, amount);
+            AddItem(itemSlot);
+        }
 
         public void AddItem(ItemSlot itemSlot)
         {
@@ -67,7 +75,7 @@ namespace Project
             return items;
         }
 
-        public void OnDataChange()
+        private void OnDataChange()
         {
             OnItemDataChanged?.Invoke();
         }

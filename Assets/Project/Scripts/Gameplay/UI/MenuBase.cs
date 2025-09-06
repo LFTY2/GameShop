@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BaseView : MonoBehaviour
+public class MenuBase : MonoBehaviour
 {
     [SerializeField] private CanvasGroup _canvasGroup;
 
