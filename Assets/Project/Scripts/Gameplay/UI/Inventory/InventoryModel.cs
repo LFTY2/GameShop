@@ -3,13 +3,17 @@ using System.Collections.Generic;
 
 namespace Project
 {
-    public class InventoryModel
+    public class InventoryModel : IInitializable
     {
         public event Action OnItemDataChanged;
-        public List<ItemSlot> Items { get; private set; } = SaveController.Load(DataKey, new List<ItemSlot>());
+        public List<ItemSlot> Items { get; private set; } 
         private const string DataKey = "Inventory";
         private ItemCreator _itemCreator;
-
+        public void Initialize()
+        {
+            _itemCreator = ModuleContainer.Instance.GetObject<ItemCreator>();
+            Items = SaveController.Load(DataKey, new List<ItemSlot>());
+        }
         public void AddItem(ItemType itemType, int amount = 1)
         {
             Item item = _itemCreator.CreateItem(itemType);
@@ -40,7 +44,7 @@ namespace Project
                     Items.Add(itemSlot);
                 }
             }
-            OnItemDataChanged?.Invoke();
+            OnDataChange();
         }
 
         //Example of use: pressing on item in inventory 
@@ -52,9 +56,9 @@ namespace Project
                 if (usableItem.RemoveOnUse)
                 {
                     itemSlot.Amount--;
+                    OnDataChange();
                 }
-            
-                OnItemDataChanged?.Invoke();
+                
                 return true;
             }
             return false;
@@ -78,6 +82,9 @@ namespace Project
         private void OnDataChange()
         {
             OnItemDataChanged?.Invoke();
+            SaveController.Save(DataKey, Items);
         }
+
+        
     }
 }

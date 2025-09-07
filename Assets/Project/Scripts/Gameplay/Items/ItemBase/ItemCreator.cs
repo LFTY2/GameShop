@@ -4,11 +4,6 @@ namespace Project
 {
     public class ItemCreator : MapCreator<ItemType, ItemConfig>
     {
-        public void Awake()
-        {
-            Initialize();
-        }
-
         public Item CreateItem(ItemType itemType)
         {
             Type type = ItemBind.GetItem(itemType);

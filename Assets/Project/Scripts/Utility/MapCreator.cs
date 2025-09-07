@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Project
 {
-    public class MapCreator<TType, T> : MonoBehaviour where TType : Enum
+    public class MapCreator<TType, T> : MonoBehaviour, IInitializable where TType : Enum
     {
         [field: SerializeField] private List<Pair> PairList;
         protected List<T> Values => Dictionary.Values.ToList();
         protected Dictionary<TType, T> Dictionary { get; } = new();
 
-        protected void Initialize()
+        public void Initialize()
         {
             foreach (var pair in PairList) Dictionary.Add(pair.Type, pair.Object);
         }

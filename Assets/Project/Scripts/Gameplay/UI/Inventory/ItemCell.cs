@@ -1,4 +1,5 @@
-﻿using Project;
+﻿using System;
+using Project;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,11 @@ public class ItemCell : MonoBehaviour
     [SerializeField] private Button _useButton;
     private ItemSlot _itemSlot;
     private Player _player;
+
+    public void Start()
+    {
+        _player = ModuleContainer.Instance.GetObject<Player>();
+    }
 
     private void OnEnable()
     {

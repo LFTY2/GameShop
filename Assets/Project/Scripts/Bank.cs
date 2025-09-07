@@ -2,15 +2,16 @@
 
 namespace Project
 {
-    public class Bank
+    public class Bank : IInitializable
     {
+        private const string Key = "Coins";
         public int Coins { get; private set; }
         public event Action<int> OnChange;
 
         public void AddCoins(int amount)
         {
             Coins += amount;
-            OnChange?.Invoke(Coins);
+            OnCoinsChange();
         }
 
         public bool TrySpendCoins(int amount)
@@ -18,10 +19,21 @@ namespace Project
             if (Coins >= amount)
             {
                 Coins -= amount;
-                OnChange?.Invoke(Coins);
+                OnCoinsChange();
                 return true;
             }
             return false;
+        }
+
+        public void Initialize()
+        {
+            Coins = SaveController.Load(Key, 1000);
+        }
+
+        public void OnCoinsChange()
+        {
+            OnChange?.Invoke(Coins);
+            SaveController.Save(Key, Coins);
         }
     }
 }

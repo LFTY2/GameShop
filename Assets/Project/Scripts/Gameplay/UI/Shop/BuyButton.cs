@@ -1,6 +1,4 @@
-﻿
-using Project;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +16,11 @@ namespace Project
         private ItemConfig _itemConfig;
         private Bank _bank;
 
+        public void Start()
+        {
+            _bank = ModuleContainer.Instance.GetObject<Bank>();
+            _itemCreator = ModuleContainer.Instance.GetObject<ItemCreator>();
+        }
 
         private void OnEnable()
         {
@@ -31,6 +34,7 @@ namespace Project
 
         public void Initialize(ItemType itemType)
         {
+            
             _itemType = itemType;
             _itemConfig = _itemCreator.GetObject(itemType);
             _icon.sprite = _itemConfig.Icon;

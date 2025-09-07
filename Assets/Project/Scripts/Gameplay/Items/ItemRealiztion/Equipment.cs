@@ -10,7 +10,7 @@
         public bool RemoveOnUse => true;
         public void Use(Player player)
         {
-            player.Heal(_equipItemConfig.AttackBonus);
+            player.IncreaseDamage(_equipItemConfig.AttackBonus);
         }
     }
 }
