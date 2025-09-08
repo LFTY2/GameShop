@@ -32,7 +32,7 @@ namespace Project
                 bool isStacked = false;
                 foreach (var item in Items)
                 {
-                    if (item.Item.Config.Id == itemSlot.Item.Config.Id)
+                    if (item.Item.ItemType == itemSlot.Item.ItemType)
                     {
                         item.Amount += item.Amount;
                         isStacked = true;

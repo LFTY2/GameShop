@@ -1,10 +1,9 @@
-﻿using System;
-using Project;
+﻿using Project;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemCell : MonoBehaviour
+public class InventoryCell : MonoBehaviour
 {
     [SerializeField] private TMP_Text _itemAmount;
     [SerializeField] private TMP_Text _itemName;
@@ -31,12 +30,23 @@ public class ItemCell : MonoBehaviour
     {
         _itemSlot = itemSlot;
         _useButton.interactable = itemSlot.Item is IUsableItem;
-        _itemAmount.text = _itemSlot.Amount.ToString();
+        if (itemSlot.Item.Config.IsStackable)
+        {
+            _itemAmount.gameObject.SetActive(true);
+            _itemAmount.text = $"{_itemSlot.Amount}{SpriteAssetKeys.InventorySprite}";
+        }
+        else
+        {
+            _itemAmount.gameObject.SetActive(false);
+        }
         _itemName.text = _itemSlot.Item.Config.Name;
         _itemAmount.gameObject.SetActive(_itemSlot.Item.Config.IsStackable);
     }
     public void Use()
     {
-        (_itemSlot.Item as IUsableItem).Use(_player);
+        if (_itemSlot.Item is IUsableItem usable)
+        {
+            usable.Use(_player);
+        }
     }
 }

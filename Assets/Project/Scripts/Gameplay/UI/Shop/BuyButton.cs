@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Project;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,11 +35,10 @@ namespace Project
 
         public void Initialize(ItemType itemType)
         {
-            
             _itemType = itemType;
             _itemConfig = _itemCreator.GetObject(itemType);
             _icon.sprite = _itemConfig.Icon;
-            _price.text = _itemConfig.BasePrice.ToString();
+            _price.text = $"{_itemConfig.BasePrice}{SpriteAssetKeys.CoinSprite}";
             _name.text = _itemConfig.Name;
         }
         
