@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: -672567855392027783, guid: 9383ef7338cdbea4c8d838031cd7a605, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -137,9 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52622886d072452ab4f5296d83b5b114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemAmount: {fileID: 8620237119942252395}
-  _itemName: {fileID: 4925587124580437298}
+  _itemAmount: {fileID: 4925587124580437298}
+  _itemName: {fileID: 8620237119942252395}
   _useButton: {fileID: 1449966205627990933}
+  _itemImage: {fileID: 6994126702601714174}
 --- !u!114 &5254030149405875891
 MonoBehaviour:
   m_ObjectHideFlags: 0

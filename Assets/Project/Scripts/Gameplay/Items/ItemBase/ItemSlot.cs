@@ -14,7 +14,7 @@
 
         public ItemSaveData GetSaveItemData()
         {
-            return new ItemSaveData() { ItemType = Item.ItemType, Amount = Amount, ExtraData = Item.ExtraData };
+            return new ItemSaveData() { ItemType = Item.ItemType, Amount = Amount, ExtraData = SaveController.ConvertToJson(Item.ExtraData) };
         }
     }
 }

@@ -13,11 +13,16 @@ namespace Project
         {
             base.Awake();
             AddObject(_itemCreator);    
+            AddObject(new InventoryModel());
+           
             AddObject(_switchMenu);    
             AddObject(new Bank());    
-            AddObject(new InventoryModel());
-            AddObject(new Player());
             
+            AddObject(new Player());
+        }
+
+        public void Start()
+        {
             Initialize();
         }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Project.Gameplay.UI
 {
-    public class SwitchMenu : MonoBehaviour
+    public class SwitchMenu : MonoBehaviour, IInitializable
     {
         [SerializeField] private RectTransform _moveTransform;
         [SerializeField] private RectTransform _shopOpenPosition;
@@ -12,8 +12,17 @@ namespace Project.Gameplay.UI
         [SerializeField] private ShopController _shopController;
         [SerializeField] private InventoryController _inventoryController;
         private Coroutine _moveCoroutine;
+        public void Initialize()
+        {
+            _shopController.Initialize();
+            _inventoryController.Initialize();
+        }
         public void OpenMenu(bool isShop)
         {
+            if (_moveCoroutine != null)
+            {
+                StopCoroutine(_moveCoroutine);
+            }
             _moveCoroutine = StartCoroutine(OpenMenuRoutine(isShop));
         }
 
@@ -39,5 +48,7 @@ namespace Project.Gameplay.UI
                 _inventoryController.Open();
             }
         }
+
+        
     }
 }

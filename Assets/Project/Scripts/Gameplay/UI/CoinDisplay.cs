@@ -7,19 +7,17 @@ public class CoinDisplay : MonoBehaviour
 {
     [SerializeField] private TMP_Text _coinAmount;
     private Bank _bank;
-    public void Start()
+
+    public void Awake()
     {
         _bank = ModuleContainer.Instance.GetObject<Bank>();
-        OnEnable();
     }
 
+    
     public void OnEnable()
     {
-        if (_bank != null)
-        {
-            _bank.OnChange += SyncCoins;
-            SyncCoins(_bank.Coins);
-        }
+        _bank.OnChange += SyncCoins;
+        SyncCoins(_bank.Coins);
     }
 
     public void SyncCoins(int amount)
@@ -29,9 +27,6 @@ public class CoinDisplay : MonoBehaviour
 
     public void OnDisable()
     {
-        if (_bank != null)
-        {
-            _bank.OnChange -= SyncCoins;
-        }
+        _bank.OnChange -= SyncCoins;
     }
 }

@@ -14,18 +14,23 @@ public class InventoryController : MenuBase
     private List<InventoryCell> _activeItemCells = new();
     private SwitchMenu _switchMenu;
 
-    private void Start()
+    public void Awake()
     {
         _switchMenu = ModuleContainer.Instance.GetObject<SwitchMenu>();
+        _inventoryModel = ModuleContainer.Instance.GetObject<InventoryModel>();
+    }
+
+    public void Initialize()
+    {
         _shopButton.onClick.AddListener(OpenShop);
-        SpawnContent();
         _inventoryModel.OnItemDataChanged += SpawnContent;
         _itemCellPool = new ObjectPool<InventoryCell>(_itemCell, 3, _content);
+        SpawnContent();
     }
 
     private void OpenShop()
     {
-        _switchMenu.OpenMenu(false);
+        _switchMenu.OpenMenu(true);
     }
 
     public void SpawnContent()
@@ -35,11 +40,12 @@ public class InventoryController : MenuBase
             buyButton.gameObject.SetActive(false);
         }
         _activeItemCells.Clear();
-
+        
         foreach (var itemSlot in _inventoryModel.Items)
         {
             InventoryCell itemCell = _itemCellPool.GetObject();
             itemCell.Initialize(itemSlot);
+            _activeItemCells.Add(itemCell);
         }
     }
 }

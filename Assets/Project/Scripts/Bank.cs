@@ -2,15 +2,17 @@
 
 namespace Project
 {
-    public class Bank : IInitializable
+    public class Bank
     {
         private const string Key = "Coins";
-        public int Coins { get; private set; }
+        public CoinsAmount CoinsAmount { get; private set; } = SaveController.Load(Key, new CoinsAmount(10000));
         public event Action<int> OnChange;
+        
+        public int Coins => CoinsAmount.Coins;
 
         public void AddCoins(int amount)
         {
-            Coins += amount;
+            CoinsAmount.Coins += amount;
             OnCoinsChange();
         }
 
@@ -18,22 +20,29 @@ namespace Project
         {
             if (Coins >= amount)
             {
-                Coins -= amount;
+                CoinsAmount.Coins -= amount;
                 OnCoinsChange();
                 return true;
             }
             return false;
         }
 
-        public void Initialize()
-        {
-            Coins = SaveController.Load(Key, 1000);
-        }
-
+      
         public void OnCoinsChange()
         {
             OnChange?.Invoke(Coins);
-            SaveController.Save(Key, Coins);
+            SaveController.Save(Key, CoinsAmount);
+        }
+    }
+    
+    [Serializable]
+    public class CoinsAmount
+    {
+        public int Coins;
+
+        public CoinsAmount(int coins)
+        {
+            Coins = coins;
         }
     }
 }

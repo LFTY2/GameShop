@@ -9,6 +9,7 @@ namespace Project
         public ItemConfig Config;
         public ItemExtraData ExtraData;
         public ItemType ItemType;
+        public virtual string Name => Config.Name;
         public void LoadItem(ItemConfig config, ItemType itemType, ItemExtraData extraData)
         {
             Config = config;

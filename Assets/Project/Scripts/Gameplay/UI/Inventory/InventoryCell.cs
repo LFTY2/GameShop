@@ -8,12 +8,15 @@ public class InventoryCell : MonoBehaviour
     [SerializeField] private TMP_Text _itemAmount;
     [SerializeField] private TMP_Text _itemName;
     [SerializeField] private Button _useButton;
+    [SerializeField] private Image _itemImage;
     private ItemSlot _itemSlot;
     private Player _player;
+    private InventoryModel _inventoryModel;
 
-    public void Start()
+    public void Awake()
     {
         _player = ModuleContainer.Instance.GetObject<Player>();
+        _inventoryModel = ModuleContainer.Instance.GetObject<InventoryModel>();
     }
 
     private void OnEnable()
@@ -39,7 +42,9 @@ public class InventoryCell : MonoBehaviour
         {
             _itemAmount.gameObject.SetActive(false);
         }
-        _itemName.text = _itemSlot.Item.Config.Name;
+
+        _itemImage.sprite = itemSlot.Item.Config.Icon;
+        _itemName.text = _itemSlot.Item.Name;
         _itemAmount.gameObject.SetActive(_itemSlot.Item.Config.IsStackable);
     }
     public void Use()
@@ -47,6 +52,7 @@ public class InventoryCell : MonoBehaviour
         if (_itemSlot.Item is IUsableItem usable)
         {
             usable.Use(_player);
+            _inventoryModel.RemoveItem(_itemSlot, 1);
         }
     }
 }

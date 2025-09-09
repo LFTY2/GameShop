@@ -17,10 +17,11 @@ namespace Project
         private ItemConfig _itemConfig;
         private Bank _bank;
 
-        public void Start()
+        public void Awake()
         {
             _bank = ModuleContainer.Instance.GetObject<Bank>();
             _itemCreator = ModuleContainer.Instance.GetObject<ItemCreator>();
+            _inventoryModel = ModuleContainer.Instance.GetObject<InventoryModel>();
         }
 
         private void OnEnable()

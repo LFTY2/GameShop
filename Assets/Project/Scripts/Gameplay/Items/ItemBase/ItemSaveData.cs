@@ -7,6 +7,11 @@ namespace Project
     {
         public ItemType ItemType;
         public int Amount;
-        public ItemExtraData ExtraData;
+        public string ExtraData;
+
+        public ItemExtraData GetExtraData()
+        {
+            return SaveController.ConvertToData<ItemExtraData>(ExtraData, null);
+        }
     }
 }

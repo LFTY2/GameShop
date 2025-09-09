@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Project
 {
     public class InventoryModel : IInitializable
     {
         public event Action OnItemDataChanged;
-        public List<ItemSlot> Items { get; private set; } 
+        public List<ItemSlot> Items { get; private set; } = new();
         private const string DataKey = "Inventory";
         private ItemCreator _itemCreator;
         public void Initialize()
         {
             _itemCreator = ModuleContainer.Instance.GetObject<ItemCreator>();
-            Items = SaveController.Load(DataKey, new List<ItemSlot>());
+            List<ItemSaveData> itemSaveData = SaveController.Load(DataKey, new InventoryData()).ItemSaveData;
+            foreach (var saveData in itemSaveData)
+            {
+                Item item = _itemCreator.CreateItem(saveData.ItemType, saveData.GetExtraData());
+                ItemSlot itemSlot = new ItemSlot(item, saveData.Amount);
+                Items.Add(itemSlot);
+            }
         }
         public void AddItem(ItemType itemType, int amount = 1)
         {
@@ -34,7 +41,7 @@ namespace Project
                 {
                     if (item.Item.ItemType == itemSlot.Item.ItemType)
                     {
-                        item.Amount += item.Amount;
+                        item.Amount += itemSlot.Amount;
                         isStacked = true;
                     }
                 }
@@ -82,9 +89,50 @@ namespace Project
         private void OnDataChange()
         {
             OnItemDataChanged?.Invoke();
-            SaveController.Save(DataKey, Items);
+            SaveItems();
         }
 
-        
+        public void SaveItems()
+        {
+            List<ItemSaveData> itemSaveData = new();
+            foreach (var item in Items)
+            {
+                itemSaveData.Add(item.GetSaveItemData());
+            }
+            SaveController.Save(DataKey, new InventoryData(itemSaveData));
+        }
+
+
+        public void RemoveItem(ItemSlot itemSlot, int amount = 1)
+        {
+            if (Items.Contains(itemSlot))
+            {
+                itemSlot.Amount--;
+                if (itemSlot.Amount <= 0)
+                {
+                    Items.Remove(itemSlot);
+                }
+                OnDataChange();
+            }
+            else
+            {
+                Debug.LogError($"Item not exits in this model");
+            }
+        }
+    }
+
+    [Serializable]
+    public class InventoryData
+    {
+        public List<ItemSaveData> ItemSaveData;
+        public InventoryData()
+        {
+            ItemSaveData = new();
+        }
+
+        public InventoryData(List<ItemSaveData> itemSaveData)
+        {
+            ItemSaveData = itemSaveData;
+        }
     }
 }
